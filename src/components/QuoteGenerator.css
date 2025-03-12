@@ -1,0 +1,37 @@
+.quote{
+    background-color: rgba(178, 177, 177, 0.69);
+    padding: 33px;
+    border-radius: 10px;
+    place-self: center;
+    align-items: center;
+    flex-direction: column;
+    width: 40%;
+    margin-top: 15px;
+    font-family:  cursive, Verdana, Tahoma, sans-serif;
+    margin-bottom: 10px;
+}
+.button{
+    margin-top: 5px;
+}
+.quoteNone{
+    padding: 33px;
+    width: 400px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+.custom-select option{
+    text-transform: capitalize;
+}
+
+.quoteDay{
+    background-color: rgba(239, 244, 197, 0.69);
+    padding: 33px;
+    border-radius: 10px;
+    place-self: center;
+    align-items: center;
+    flex-direction: column;
+    width: 80%;
+    margin-top: 15px;
+    font-family:  cursive, Verdana, Tahoma, sans-serif;
+    margin-bottom: 10px;
+}

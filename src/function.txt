@@ -1,0 +1,63 @@
+const generateQuotesEN = async(selectCategory)=>{
+        console.log(selectCategory)
+        if (selectCategory == "random") return selectCategory == " ";
+            
+        let options = {
+            method: 'GET',
+            url: 'https://famous-quotes4.p.rapidapi.com/',
+            headers: {
+                'x-rapidapi-key': 'b348904a84msh5d56186ebd06d90p139554jsn0e91cc8a4efa',
+                'x-rapidapi-host': 'famous-quotes4.p.rapidapi.com'
+            }
+          }
+          
+          
+          console.log(options)
+          try {
+                const responseEN = await axios.request(options);
+                console.log(responseEN.data);
+            } catch (error) {
+                console.error(error);
+            }
+        //   fetch(url,options)
+        //         .then(res => res.json()) // parse response as JSON
+        //         .then(data => {
+        //           console.log(data)
+        //           console.log(data[0])
+        //           setQuote({
+        //             quote: data[0].quote,
+        //             author: data[0].author,
+        //             category: data[0].category
+        //           })
+        //         })
+        //         .catch(err => {
+        //             console.log(`error ${err}`)
+        //         }); 
+    }
+    const generateQuotesFR = async(selectCategory)=>{
+        console.log(selectCategory)
+        if (selectCategory == "random") return selectCategory == " ";
+            
+        let options = {
+            method: 'GET',
+            headers: { 'x-api-key': process.env.API_KEY,}
+          }
+          
+             const url = `https://api.api-ninjas.com/v1/quotes?category=${selectCategory}`;
+          
+          console.log(options)
+          fetch(url,options)
+                .then(res => res.json()) // parse response as JSON
+                .then(data => {
+                  console.log(data)
+                  console.log(data[0])
+                  setQuote({
+                    quote: data[0].quote,
+                    author: data[0].author,
+                    category: data[0].category
+                  })
+                })
+                .catch(err => {
+                    console.log(`error ${err}`)
+                }); 
+    }
