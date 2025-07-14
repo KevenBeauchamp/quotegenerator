@@ -7,12 +7,29 @@ export default function Quotegenerator(props){
     const [selectCategory, setSelectedCategory] = useState("");
     const [data, setData] = useState(null);
 
-
+    const backgroundMap = {
+    attitude: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4",
+    business: "https://images.unsplash.com/photo-1521791136064-7986c2920216",
+    education: "https://images.unsplash.com/photo-1510936111840-65e151ad71bb",
+    failure: "https://images.unsplash.com/photo-1529101091764-c3526daf38fe",
+    fear: "https://images.unsplash.com/photo-1526401485004-2fda9f17f1f5",
+    happiness: "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
+    inspirational: "https://images.unsplash.com/photo-1493244040629-496f6d136cc3",
+    leadership: "https://images.unsplash.com/photo-1497366216548-37526070297c",
+    life: "https://images.unsplash.com/photo-1470770841072-f978cf4d019e",
+    love: "https://images.unsplash.com/photo-1505330622279-bf7d7fc918f4",
+    motivational: "https://images.unsplash.com/photo-1508780709619-79562169bc64",
+    success: "https://images.unsplash.com/photo-1520974735194-8d647d2647b3",
+    wisdom: "https://images.unsplash.com/photo-1500048993951-d995b6d51f8f",
+    money: "https://images.unsplash.com/photo-1500048993951-d995b6d51f8f",
+    default: "https://images.unsplash.com/photo-1503264116251-35a269479413"
+    };
+    const backgroundUrl = backgroundMap[quote_data.category] || backgroundMap.default;
     const handleChange = (event) =>{
         setSelectedCategory(event.target.value);
         // generateQuotes(event.target.value);
     }
-    const generateQuotes = async(selectCategory)=>{
+    const generateQuotes = async(selectCategory = " ")=>{
         if (selectCategory == "random") return selectCategory == " ";
             
         let options = {
@@ -22,11 +39,11 @@ export default function Quotegenerator(props){
           
              const url = `https://api.api-ninjas.com/v1/quotes?category=${selectCategory}`;
           
-          console.log(options)
+          console.log(url)
           fetch(url,options)
                 .then(res => res.json()) // parse response as JSON
                 .then(data => {
-                  console.log(data)
+                  console.log("data",data)
                   console.log(data[0])
                   setQuote({
                     quote: data[0].quote,
@@ -48,12 +65,12 @@ export default function Quotegenerator(props){
           
              const url = `https://api.api-ninjas.com/v1/quotes?category=${selectCategory}`;
           
-          console.log(options)
+        //   console.log(options)
           fetch(url,options)
                 .then(res => res.json()) // parse response as JSON
                 .then(data => {
-                  console.log(data)
-                  console.log("random",data[0])
+                //   console.log(data)
+                //   console.log("random",data[0])
                   setQuoteRandom({
                     quote: data[0].quote,
                     author: data[0].author,
@@ -82,43 +99,38 @@ export default function Quotegenerator(props){
     useEffect(
         ()=>{
             generateQuotesRandom()
+            generateQuotes()
             // generateQuotesFR()
+            const sevenMinutes =  7 * 60 * 1000;
+            const intervalQ = setInterval(() => {
+                generateQuotes();
+            }, sevenMinutes); // 10 sec
+            // return () => clearInterval(intervalQ);
+
+
+            const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+            const intervalId = setInterval(() => {
+            generateQuotesRandom();
+            }, oneDay);
+
+            return () => clearInterval(intervalId,intervalQ); // Clean up
+            
         },[]
     )
-    function convertTimestampToDatetime(timestamp) {
-        const date = new Date(timestamp * 1000);
       
-        const options = {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-          hour: 'numeric',
-          minute: 'numeric',
-          second: 'numeric',
-          timeZoneName: 'short'
-        };
-      
-        return date.toLocaleString(undefined, options);
-      }
-      
-      const timestamp = 1615616341; // Example timestamp
-      const datetimeString = convertTimestampToDatetime(timestamp);
-      console.log(datetimeString);
+    const readQuote = () => {
+    const speech = new SpeechSynthesisUtterance(`${quote_data.quote} by ${quote_data.author}`);
+    window.speechSynthesis.speak(speech);
+    };
 
-      function unixTimestampToGmtDatetime(unixTimestamp) {
-        const date = new Date(unixTimestamp * 1000);
-        return date.toUTCString();
-      }
       
-    //   const timestamps = 1678886400;
-      const gmtDatetime = unixTimestampToGmtDatetime(timestamp);
-      console.log(gmtDatetime);
     return(
         <>
             <div>
                 <div>
                     <h2>Quote Generator</h2>
                 </div>
+                <div className="content">
                 {quote_data_random?
                 <div className="quoteDay">
                     <h2>Quote of the day</h2>
@@ -210,17 +222,31 @@ export default function Quotegenerator(props){
                 {/* </div> */}
                 
                 {quote_data?
-                <div className="quote">
+                <div
+                //  style={{
+                        
+                //     backgroundImage: `url(${backgroundUrl})`,
+                //      color: white;
+                // } }
+                className="quote">
                     
                     <p>{quote_data.quote}</p>
                     <h5>{quote_data.author}</h5>
-                    <span>Category : {quote_data.category}</span>
+                    <span>Category : {quote_data.category.toUpperCase()}</span>
                 </div>
                 :<div className="quoteNone"></div>
                 }
-                <div>
-                    <button className="button" onClick={()=>generateQuotes(selectCategory)}>Generate Random Quote`</button>
                 </div>
+                    <div className="fof">
+                        <div className="left">
+
+                    </div>
+                    <div className="right">
+                        <button className="button" onClick={()=>generateQuotes(selectCategory)}>Generate New Quote`</button>
+                        {/* <button onClick={readQuote}>🔊 Speak</button> */}
+                    </div>
+                </div>
+                
                 
             </div>
         </>
